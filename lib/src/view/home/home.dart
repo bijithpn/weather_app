@@ -48,7 +48,7 @@ class _HomeViewState extends State<HomeView> {
         ),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () async {},
             icon: const Icon(Icons.search),
           )
         ],
@@ -58,7 +58,7 @@ class _HomeViewState extends State<HomeView> {
           itemBuilder: (_, i) {
             var location = locations[i];
             return ListTile(
-              onTap: () {},
+              onTap: () async {},
               enableFeedback: true,
               leading: Container(
                   padding: const EdgeInsets.all(10),

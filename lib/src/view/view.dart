@@ -1,2 +1,2 @@
-export 'details/weather_details.dart';
+export 'weather/weather.dart';
 export 'home/home.dart';
