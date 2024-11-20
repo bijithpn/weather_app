@@ -21,6 +21,8 @@ class Weather {
   int isDay;
   int weathercode;
   String location;
+  List<String> forcastTimeList;
+  List<int> forcastWeatheCodeList;
 
   Weather({
     required this.time,
@@ -30,6 +32,8 @@ class Weather {
     required this.isDay,
     required this.weathercode,
     required this.location,
+    required this.forcastTimeList,
+    required this.forcastWeatheCodeList,
   });
 
   factory Weather.fromJson(Map<String, dynamic> json) => Weather(
@@ -40,6 +44,8 @@ class Weather {
         isDay: json["is_day"],
         weathercode: json["weathercode"],
         location: 'unknown',
+        forcastTimeList: [],
+        forcastWeatheCodeList: [],
       );
 
   Map<String, dynamic> toJson() => {
@@ -51,25 +57,6 @@ class Weather {
         "weathercode": weathercode,
       };
 
-  Weather copyWith(
-      {String? time,
-      double? temperature,
-      double? windspeed,
-      int? winddirection,
-      int? isDay,
-      int? weathercode,
-      String? location}) {
-    return Weather(
-      time: time ?? this.time,
-      temperature: temperature ?? this.temperature,
-      windspeed: windspeed ?? this.windspeed,
-      winddirection: winddirection ?? this.winddirection,
-      isDay: isDay ?? this.isDay,
-      weathercode: weathercode ?? this.weathercode,
-      location: location ?? this.location,
-    );
-  }
-
   static final unknown = Weather(
     time: '',
     temperature: 0,
@@ -78,7 +65,34 @@ class Weather {
     isDay: 0,
     weathercode: 0,
     location: '',
+    forcastTimeList: [],
+    forcastWeatheCodeList: [],
   );
+
+  Weather copyWith({
+    String? time,
+    double? temperature,
+    double? windspeed,
+    int? winddirection,
+    int? isDay,
+    int? weathercode,
+    String? location,
+    List<String>? forcastTimeList,
+    List<int>? forcastWeatheCodeList,
+  }) {
+    return Weather(
+      time: time ?? this.time,
+      temperature: temperature ?? this.temperature,
+      windspeed: windspeed ?? this.windspeed,
+      winddirection: winddirection ?? this.winddirection,
+      isDay: isDay ?? this.isDay,
+      weathercode: weathercode ?? this.weathercode,
+      location: location ?? this.location,
+      forcastTimeList: forcastTimeList ?? this.forcastTimeList,
+      forcastWeatheCodeList:
+          forcastWeatheCodeList ?? this.forcastWeatheCodeList,
+    );
+  }
 }
 
 extension TemperatureUnitsX on TemperatureUnits {

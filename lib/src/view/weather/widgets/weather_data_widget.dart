@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-
 import 'package:weather_app/src/core/utils/utils.dart';
-
 import '../../../data/model/model.dart';
+import 'widgets.dart';
 
 class WeatherDataWidget extends StatelessWidget {
   const WeatherDataWidget({
@@ -59,38 +58,14 @@ class WeatherDataWidget extends StatelessWidget {
                   icon: Icons.air,
                   text: 'Direction: ${weather.winddirection}°',
                 ),
+                const SizedBox(height: 15),
+                ForcastWidget(
+                  timeList: weather.forcastTimeList,
+                  weatherCode: weather.forcastWeatheCodeList,
+                )
               ],
             ),
           ),
-        ),
-      ],
-    );
-  }
-}
-
-class IconTextWidget extends StatelessWidget {
-  final IconData icon;
-  final String text;
-  const IconTextWidget({
-    super.key,
-    required this.icon,
-    required this.text,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Icon(
-          icon,
-          color: Colors.black,
-        ),
-        const SizedBox(width: 10),
-        Text(
-          text,
-          style: Theme.of(context).textTheme.bodyLarge!.copyWith(fontSize: 18),
         ),
       ],
     );
@@ -103,30 +78,11 @@ class _WeatherIcon extends StatelessWidget {
   final WeatherCondition weather;
 
   static const _iconSize = 75.0;
-  String getWeatherEmoji() {
-    switch (weather) {
-      case WeatherCondition.clear:
-        return '☀️';
-      case WeatherCondition.cloudy:
-        return '⛅';
-      case WeatherCondition.foggy:
-        return '🌫️';
-      case WeatherCondition.rainy:
-        return '🌧️';
-      case WeatherCondition.snowy:
-        return '❄️';
-      case WeatherCondition.thunderstorm:
-        return '⛈️';
-      case WeatherCondition.unknown:
-      default:
-        return '❓';
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
     return Text(
-      getWeatherEmoji(),
+      Utils.getWeatherEmoji(weather),
       style: const TextStyle(fontSize: _iconSize),
     );
   }

@@ -49,7 +49,7 @@ class _SearchPageState extends State<SearchPage> {
                 textInputAction: TextInputAction.done,
                 onFieldSubmitted: (value) {
                   if (_formKey.currentState!.validate()) {
-                    Navigator.of(context).pop(value);
+                    Navigator.of(context).pop(value.trim());
                   }
                 },
                 validator: (value) {
@@ -70,7 +70,7 @@ class _SearchPageState extends State<SearchPage> {
                       icon: const Icon(Icons.search, semanticLabel: 'Submit'),
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
-                          Navigator.of(context).pop(_text);
+                          Navigator.of(context).pop(_text.trim());
                         }
                       },
                     )),

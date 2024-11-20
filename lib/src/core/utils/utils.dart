@@ -25,20 +25,40 @@ class Utils {
   static Color getBgColor(WeatherCondition weather) {
     switch (weather) {
       case WeatherCondition.clear:
-        return Colors.blueAccent;
+        return Colors.orangeAccent;
       case WeatherCondition.cloudy:
         return Colors.grey;
       case WeatherCondition.rainy:
-        return Colors.blueGrey;
+        return Colors.blueGrey.shade600;
       case WeatherCondition.snowy:
-        return Colors.lightBlue.shade100;
+        return Colors.lightBlue.shade50;
       case WeatherCondition.thunderstorm:
-        return Colors.yellowAccent;
+        return Colors.deepPurple;
       case WeatherCondition.foggy:
-        return Colors.grey.shade300;
+        return Colors.grey.shade400;
       case WeatherCondition.unknown:
       default:
         return Colors.white;
+    }
+  }
+
+  static String getWeatherEmoji(WeatherCondition weather) {
+    switch (weather) {
+      case WeatherCondition.clear:
+        return '☀️';
+      case WeatherCondition.cloudy:
+        return '⛅';
+      case WeatherCondition.foggy:
+        return '🌫️';
+      case WeatherCondition.rainy:
+        return '🌧️';
+      case WeatherCondition.snowy:
+        return '❄️';
+      case WeatherCondition.thunderstorm:
+        return '⛈️';
+      case WeatherCondition.unknown:
+      default:
+        return '❓';
     }
   }
 }
