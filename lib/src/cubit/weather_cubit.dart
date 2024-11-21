@@ -16,33 +16,20 @@ class WeatherCubit extends Cubit<WeatherState> {
     emit(state.copyWith(status: WeatherStatus.loading));
     try {
       location ??= await _weatherRepository.getPlaceName(lat, lng);
-      final weather = await _weatherRepository.getWeather(
-        latitude: lat,
-        longitude: lng,
-      );
-      final (
+      final results = await Future.wait([
+        _weatherRepository.getWeather(latitude: lat, longitude: lng),
+        _weatherRepository.fetchForecastData(latitude: lat, longitude: lng),
+      ]);
+      final weather = results[0] as Weather;
+      final forecast = results[1] as (
         List<String> timeList,
-        List<int> weatherCodeLIst,
+        List<int> weatherCodeList,
         List<double> temperatureList
-      ) = await _weatherRepository.fetchForecastData(
-          latitude: lat, longitude: lng);
-      final units = state.temperatureUnits;
-      final value = units.isFahrenheit
-          ? weather.temperature.toFahrenheit()
-          : weather.temperature;
-
-      emit(
-        state.copyWith(
-          status: WeatherStatus.success,
-          temperatureUnits: units,
-          weather: weather.copyWith(
-            temperature: value,
-            location: location,
-            forecastTimeList: timeList,
-            forecastTemperatureList: temperatureList,
-            forecastWeatheCodeList: weatherCodeLIst,
-          ),
-        ),
+      );
+      _emitWeatherState(
+        weather,
+        location,
+        forecast,
       );
     } on Exception {
       emit(state.copyWith(status: WeatherStatus.failure));
@@ -52,36 +39,28 @@ class WeatherCubit extends Cubit<WeatherState> {
   Future<void> fetchWeather(String? city) async {
     if (city == null || city.isEmpty) return;
     emit(state.copyWith(status: WeatherStatus.loading));
-
     try {
-      final poistion = await _weatherRepository.getCoordinatesFromPlace(city);
-      final (
-        List<String> timeList,
-        List<int> weatherCodeLIst,
-        List<double> temperatureList
-      ) = await _weatherRepository.fetchForecastData(
-          latitude: poistion['latitude']!, longitude: poistion['longitude']!);
-      final weather = await _weatherRepository.getWeather(
-        latitude: poistion['latitude']!,
-        longitude: poistion['longitude']!,
-      );
-      final units = state.temperatureUnits;
-      final value = units.isFahrenheit
-          ? weather.temperature.toFahrenheit()
-          : weather.temperature;
-
-      emit(
-        state.copyWith(
-          status: WeatherStatus.success,
-          temperatureUnits: units,
-          weather: weather.copyWith(
-            temperature: value,
-            location: city,
-            forecastTimeList: timeList,
-            forecastWeatheCodeList: weatherCodeLIst,
-            forecastTemperatureList: temperatureList,
-          ),
+      final location = await _weatherRepository.getCoordinatesFromPlace(city);
+      final results = await Future.wait([
+        _weatherRepository.getWeather(
+          latitude: location['latitude']!,
+          longitude: location['longitude']!,
         ),
+        _weatherRepository.fetchForecastData(
+          latitude: location['latitude']!,
+          longitude: location['longitude']!,
+        ),
+      ]);
+      final weather = results[0] as Weather;
+      final forecast = results[1] as (
+        List<String> timeList,
+        List<int> weatherCodeList,
+        List<double> temperatureList
+      );
+      _emitWeatherState(
+        weather,
+        city,
+        forecast,
       );
     } on Exception {
       emit(state.copyWith(status: WeatherStatus.failure));
@@ -89,42 +68,62 @@ class WeatherCubit extends Cubit<WeatherState> {
   }
 
   Future<void> refreshWeather() async {
-    if (!state.status.isSuccess) return;
-    if (state.weather == Weather.unknown) return;
+    if (!state.status.isSuccess || state.weather == Weather.unknown) return;
     try {
-      final position = await _weatherRepository
+      final location = await _weatherRepository
           .getCoordinatesFromPlace(state.weather.location);
-      final (
-        List<String> timeList,
-        List<int> weatherCodeLIst,
-        List<double> temperatureList
-      ) = await _weatherRepository.fetchForecastData(
-          latitude: position['latitude']!, longitude: position['longitude']!);
-      final weather = await _weatherRepository.getWeather(
-        latitude: position['latitude']!,
-        longitude: position['longitude']!,
-      );
-      final units = state.temperatureUnits;
-      final value = units.isFahrenheit
-          ? weather.temperature.toFahrenheit()
-          : weather.temperature;
-
-      emit(
-        state.copyWith(
-          status: WeatherStatus.success,
-          temperatureUnits: units,
-          weather: weather.copyWith(
-            temperature: value,
-            location: state.weather.location,
-            forecastTimeList: timeList,
-            forecastTemperatureList: temperatureList,
-            forecastWeatheCodeList: weatherCodeLIst,
-          ),
+      final results = await Future.wait([
+        _weatherRepository.getWeather(
+          latitude: location['latitude']!,
+          longitude: location['longitude']!,
         ),
+        _weatherRepository.fetchForecastData(
+          latitude: location['latitude']!,
+          longitude: location['longitude']!,
+        ),
+      ]);
+      final weather = results[0] as Weather;
+      final forecast = results[1] as (
+        List<String> timeList,
+        List<int> weatherCodeList,
+        List<double> temperatureList
+      );
+      _emitWeatherState(
+        weather,
+        state.weather.location,
+        forecast,
       );
     } on Exception {
       emit(state);
     }
+  }
+
+  void _emitWeatherState(
+      Weather weather,
+      String location,
+      (
+        List<String> timeList,
+        List<int> weatherCodeList,
+        List<double> temperatureList
+      ) forecast) {
+    final units = state.temperatureUnits;
+    final temperature = units.isFahrenheit
+        ? weather.temperature.toFahrenheit()
+        : weather.temperature;
+    final (timeList, weatherCodeList, temperatureList) = forecast;
+    emit(
+      state.copyWith(
+        status: WeatherStatus.success,
+        temperatureUnits: units,
+        weather: weather.copyWith(
+          temperature: temperature,
+          location: location,
+          forecastTimeList: timeList,
+          forecastTemperatureList: temperatureList,
+          forecastWeatheCodeList: weatherCodeList,
+        ),
+      ),
+    );
   }
 }
 

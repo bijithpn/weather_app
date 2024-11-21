@@ -33,9 +33,13 @@ class ForecastWidget extends StatelessWidget {
                   color: Colors.white,
                 ),
           ),
+          const SizedBox(
+            height: 10,
+          ),
           SizedBox(
-            height: 120,
+            height: 110,
             child: ListView.separated(
+              physics: const BouncingScrollPhysics(),
               separatorBuilder: (_, __) => const SizedBox(width: 10),
               scrollDirection: Axis.horizontal,
               itemCount: timeList.length - 1,
