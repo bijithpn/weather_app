@@ -32,12 +32,13 @@ class _SearchPageState extends State<SearchPage> {
               },
               icon: const Icon(Icons.arrow_back_ios_new_outlined)),
           title: Text(
-            'City Search',
+            'Search',
             style: Theme.of(context)
                 .textTheme
                 .titleLarge!
                 .copyWith(fontWeight: FontWeight.bold),
           )),
+      resizeToAvoidBottomInset: false,
       body: Form(
         key: _formKey,
         child: Padding(

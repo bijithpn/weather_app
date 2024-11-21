@@ -54,6 +54,13 @@ class ForecastWidget extends StatelessWidget {
                     : Colors.white;
                 return Card(
                   elevation: 5,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    // side: BorderSide(
+                    //   color: textColor,
+                    //   width: 1,
+                    // ),
+                  ),
                   color: Utils.getBgColor(weatherCode),
                   child: Padding(
                     padding: const EdgeInsets.symmetric(

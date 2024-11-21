@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:weather_app/src/cubit/weather_cubit.dart';
 
 class LocationService {
   Future<Position?> requestAndGetLocation(BuildContext context) async {
@@ -40,6 +42,7 @@ class LocationService {
             TextButton(
               child: const Text("Open Settings"),
               onPressed: () {
+                context.read<WeatherCubit>().emitEmptyState();
                 Geolocator.openLocationSettings();
                 Navigator.of(ctx).pop();
               },
@@ -75,6 +78,7 @@ class LocationService {
               onPressed: () {
                 Navigator.of(context).pop();
                 if (isSettingsRedirect) {
+                  context.read<WeatherCubit>().emitEmptyState();
                   openAppSettings();
                 }
               },

@@ -98,6 +98,10 @@ class WeatherCubit extends Cubit<WeatherState> {
     }
   }
 
+  void emitEmptyState() {
+    emit(state.copyWith(status: WeatherStatus.initial));
+  }
+
   void _emitWeatherState(
       Weather weather,
       String location,
