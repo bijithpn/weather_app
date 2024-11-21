@@ -77,8 +77,8 @@ class LocationService {
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
+                context.read<WeatherCubit>().emitEmptyState();
                 if (isSettingsRedirect) {
-                  context.read<WeatherCubit>().emitEmptyState();
                   openAppSettings();
                 }
               },
