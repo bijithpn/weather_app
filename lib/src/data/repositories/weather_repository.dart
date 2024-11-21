@@ -60,7 +60,12 @@ class WeatherRepository {
     }
   }
 
-  Future<(List<String> timeList, List<int> weatherCodeLIst)> fetchForcastData({
+  Future<
+      (
+        List<String> timeList,
+        List<int> weatherCodeLIst,
+        List<double> temperatureList
+      )> fetchForecastData({
     required double latitude,
     required double longitude,
   }) async {
@@ -72,21 +77,26 @@ class WeatherRepository {
           queryParameters: {
             'latitude': '$latitude',
             'longitude': '$longitude',
-            "daily": "weather_code"
+            "daily": "weather_code,temperature_2m_max",
+            "forecast_days": 6
           },
         ),
       );
       if (!response.data.containsKey('daily')) {
-        throw ForcastNotFoundFailure();
+        throw ForecastNotFoundFailure();
       }
       List<String> timeList =
           response.data['daily']["time"].whereType<String>().toList();
       List<int> weatherCodeLIst =
           response.data['daily']["weather_code"].whereType<int>().toList();
+      List<double> temperatureList = response.data['daily']
+              ["temperature_2m_max"]
+          .whereType<double>()
+          .toList();
 
-      return (timeList, weatherCodeLIst);
+      return (timeList, weatherCodeLIst, temperatureList);
     } catch (e) {
-      throw ForcastRequestFailure();
+      throw ForecastRequestFailure();
     }
   }
 }

@@ -19,6 +19,21 @@ class WeatherPage extends StatelessWidget {
               .titleLarge!
               .copyWith(fontWeight: FontWeight.bold),
         ),
+        actions: [
+          IconButton(
+            icon: const Icon(
+              Icons.search,
+            ),
+            onPressed: () async {
+              final city =
+                  await Navigator.of(context).push(SearchPage.route()) ?? "";
+              if (!context.mounted) return;
+              if (city.isNotEmpty) {
+                await context.read<WeatherCubit>().fetchWeather(city);
+              }
+            },
+          )
+        ],
       ),
       body: Center(
         child: BlocBuilder<WeatherCubit, WeatherState>(
@@ -37,17 +52,6 @@ class WeatherPage extends StatelessWidget {
             };
           },
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.search, semanticLabel: 'Search'),
-        onPressed: () async {
-          final city =
-              await Navigator.of(context).push(SearchPage.route()) ?? "";
-          if (!context.mounted) return;
-          if (city.isNotEmpty) {
-            await context.read<WeatherCubit>().fetchWeather(city);
-          }
-        },
       ),
     );
   }

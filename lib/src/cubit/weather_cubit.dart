@@ -20,9 +20,12 @@ class WeatherCubit extends Cubit<WeatherState> {
         latitude: lat,
         longitude: lng,
       );
-      final (List<String> timeList, List<int> weatherCodeLIst) =
-          await _weatherRepository.fetchForcastData(
-              latitude: lat, longitude: lng);
+      final (
+        List<String> timeList,
+        List<int> weatherCodeLIst,
+        List<double> temperatureList
+      ) = await _weatherRepository.fetchForecastData(
+          latitude: lat, longitude: lng);
       final units = state.temperatureUnits;
       final value = units.isFahrenheit
           ? weather.temperature.toFahrenheit()
@@ -35,8 +38,9 @@ class WeatherCubit extends Cubit<WeatherState> {
           weather: weather.copyWith(
             temperature: value,
             location: location,
-            forcastTimeList: timeList,
-            forcastWeatheCodeList: weatherCodeLIst,
+            forecastTimeList: timeList,
+            forecastTemperatureList: temperatureList,
+            forecastWeatheCodeList: weatherCodeLIst,
           ),
         ),
       );
@@ -51,9 +55,12 @@ class WeatherCubit extends Cubit<WeatherState> {
 
     try {
       final location = await _weatherRepository.locationSearch(city);
-      final (List<String> timeList, List<int> weatherCodeLIst) =
-          await _weatherRepository.fetchForcastData(
-              latitude: location.latitude, longitude: location.longitude);
+      final (
+        List<String> timeList,
+        List<int> weatherCodeLIst,
+        List<double> temperatureList
+      ) = await _weatherRepository.fetchForecastData(
+          latitude: location.latitude, longitude: location.longitude);
       final weather = await _weatherRepository.getWeather(
         latitude: location.latitude,
         longitude: location.longitude,
@@ -70,8 +77,9 @@ class WeatherCubit extends Cubit<WeatherState> {
           weather: weather.copyWith(
             temperature: value,
             location: location.name,
-            forcastTimeList: timeList,
-            forcastWeatheCodeList: weatherCodeLIst,
+            forecastTimeList: timeList,
+            forecastWeatheCodeList: weatherCodeLIst,
+            forecastTemperatureList: temperatureList,
           ),
         ),
       );
@@ -86,9 +94,12 @@ class WeatherCubit extends Cubit<WeatherState> {
     try {
       final location =
           await _weatherRepository.locationSearch(state.weather.location);
-      final (List<String> timeList, List<int> weatherCodeLIst) =
-          await _weatherRepository.fetchForcastData(
-              latitude: location.latitude, longitude: location.longitude);
+      final (
+        List<String> timeList,
+        List<int> weatherCodeLIst,
+        List<double> temperatureList
+      ) = await _weatherRepository.fetchForecastData(
+          latitude: location.latitude, longitude: location.longitude);
       final weather = await _weatherRepository.getWeather(
         latitude: location.latitude,
         longitude: location.longitude,
@@ -105,8 +116,9 @@ class WeatherCubit extends Cubit<WeatherState> {
           weather: weather.copyWith(
             temperature: value,
             location: location.name,
-            forcastTimeList: timeList,
-            forcastWeatheCodeList: weatherCodeLIst,
+            forecastTimeList: timeList,
+            forecastTemperatureList: temperatureList,
+            forecastWeatheCodeList: weatherCodeLIst,
           ),
         ),
       );

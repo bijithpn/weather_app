@@ -68,21 +68,21 @@ class WeatherNotFoundFailure implements Exception {
   String toString() => 'WeatherNotFoundFailure: $message';
 }
 
-class ForcastNotFoundFailure implements Exception {
+class ForecastNotFoundFailure implements Exception {
   final String message;
 
-  ForcastNotFoundFailure(
-      [this.message = 'The specified forcast was not found.']);
+  ForecastNotFoundFailure(
+      [this.message = 'The specified Forecast was not found.']);
 
   @override
-  String toString() => 'ForcastNotFoundFailure: $message';
+  String toString() => 'ForecastNotFoundFailure: $message';
 }
 
-class ForcastRequestFailure implements Exception {
+class ForecastRequestFailure implements Exception {
   final String message;
 
-  ForcastRequestFailure([this.message = 'Failed to search for the forcast.']);
+  ForecastRequestFailure([this.message = 'Failed to search for the Forecast.']);
 
   @override
-  String toString() => 'ForcastRequestFailure: $message';
+  String toString() => 'ForecastRequestFailure: $message';
 }

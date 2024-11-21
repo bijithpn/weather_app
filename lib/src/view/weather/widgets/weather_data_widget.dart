@@ -43,25 +43,70 @@ class WeatherDataWidget extends StatelessWidget {
                     fontWeight: FontWeight.w200,
                   ),
                 ),
+                const SizedBox(height: 7),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      weather.formattedTemperature(units),
+                      style: Theme.of(context)
+                          .textTheme
+                          .titleMedium!
+                          .copyWith(fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(width: 10),
+                    Text(
+                      Utils.getWeatherDescription(weather.weathercode),
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                  ],
+                ),
                 const SizedBox(height: 5),
-                Text(
-                  weather.formattedTemperature(units),
-                  style: theme.textTheme.displaySmall?.copyWith(
-                    fontWeight: FontWeight.bold,
+                Container(
+                  margin:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).primaryColor,
+                    borderRadius: BorderRadius.circular(10),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.3),
+                        spreadRadius: 5,
+                        blurRadius: 7,
+                        offset: const Offset(0, 3),
+                      ),
+                    ],
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      IconTextWidget(
+                        weatherCondition: weatherCode,
+                        icon: weather.isDay == 1
+                            ? Icons.wb_sunny
+                            : Icons.nights_stay,
+                        text: weather.isDay == 1 ? "Day" : "Night",
+                      ),
+                      IconTextWidget(
+                        weatherCondition: weatherCode,
+                        icon: Icons.wind_power,
+                        text: '${weather.windspeed} km/h',
+                      ),
+                      IconTextWidget(
+                        weatherCondition: weatherCode,
+                        icon: Icons.air,
+                        text: '${weather.winddirection}°',
+                      ),
+                    ],
                   ),
                 ),
-                IconTextWidget(
-                  icon: Icons.wind_power,
-                  text: 'Wind Speed: ${weather.windspeed} km/h',
-                ),
-                IconTextWidget(
-                  icon: Icons.air,
-                  text: 'Direction: ${weather.winddirection}°',
-                ),
                 const SizedBox(height: 15),
-                ForcastWidget(
-                  timeList: weather.forcastTimeList,
-                  weatherCode: weather.forcastWeatheCodeList,
+                ForecastWidget(
+                  timeList: weather.forecastTimeList,
+                  weatherCodes: weather.forecastWeatheCodeList,
+                  temperatureList: weather.forecastTemperatureList,
                 )
               ],
             ),
@@ -77,7 +122,7 @@ class _WeatherIcon extends StatelessWidget {
 
   final WeatherCondition weather;
 
-  static const _iconSize = 75.0;
+  static const _iconSize = 80.0;
 
   @override
   Widget build(BuildContext context) {

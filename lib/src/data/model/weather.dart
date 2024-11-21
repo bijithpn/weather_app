@@ -21,8 +21,9 @@ class Weather {
   int isDay;
   int weathercode;
   String location;
-  List<String> forcastTimeList;
-  List<int> forcastWeatheCodeList;
+  List<String> forecastTimeList;
+  List<int> forecastWeatheCodeList;
+  List<double> forecastTemperatureList;
 
   Weather({
     required this.time,
@@ -32,8 +33,9 @@ class Weather {
     required this.isDay,
     required this.weathercode,
     required this.location,
-    required this.forcastTimeList,
-    required this.forcastWeatheCodeList,
+    this.forecastTimeList = const [],
+    this.forecastWeatheCodeList = const [],
+    this.forecastTemperatureList = const [],
   });
 
   factory Weather.fromJson(Map<String, dynamic> json) => Weather(
@@ -44,8 +46,9 @@ class Weather {
         isDay: json["is_day"],
         weathercode: json["weathercode"],
         location: 'unknown',
-        forcastTimeList: [],
-        forcastWeatheCodeList: [],
+        forecastTimeList: [],
+        forecastWeatheCodeList: [],
+        forecastTemperatureList: [],
       );
 
   Map<String, dynamic> toJson() => {
@@ -65,8 +68,9 @@ class Weather {
     isDay: 0,
     weathercode: 0,
     location: '',
-    forcastTimeList: [],
-    forcastWeatheCodeList: [],
+    forecastTimeList: [],
+    forecastWeatheCodeList: [],
+    forecastTemperatureList: [],
   );
 
   Weather copyWith({
@@ -77,8 +81,9 @@ class Weather {
     int? isDay,
     int? weathercode,
     String? location,
-    List<String>? forcastTimeList,
-    List<int>? forcastWeatheCodeList,
+    List<String>? forecastTimeList,
+    List<int>? forecastWeatheCodeList,
+    List<double>? forecastTemperatureList,
   }) {
     return Weather(
       time: time ?? this.time,
@@ -88,9 +93,11 @@ class Weather {
       isDay: isDay ?? this.isDay,
       weathercode: weathercode ?? this.weathercode,
       location: location ?? this.location,
-      forcastTimeList: forcastTimeList ?? this.forcastTimeList,
-      forcastWeatheCodeList:
-          forcastWeatheCodeList ?? this.forcastWeatheCodeList,
+      forecastTimeList: forecastTimeList ?? this.forecastTimeList,
+      forecastWeatheCodeList:
+          forecastWeatheCodeList ?? this.forecastWeatheCodeList,
+      forecastTemperatureList:
+          forecastTemperatureList ?? this.forecastTemperatureList,
     );
   }
 }
