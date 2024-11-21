@@ -78,6 +78,7 @@ class WeatherCubit extends Cubit<WeatherState> {
 
   Future<void> refreshWeather() async {
     if (!state.status.isSuccess || state.weather == Weather.unknown) return;
+    emit(state.copyWith(status: WeatherStatus.loading));
     try {
       final location = await _weatherRepository
           .getCoordinatesFromPlace(state.weather.location);

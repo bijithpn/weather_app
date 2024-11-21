@@ -55,6 +55,14 @@ class _WeatherPageState extends State<WeatherPage> {
                 await context.read<WeatherCubit>().fetchWeather(city);
               }
             },
+          ),
+          IconButton(
+            icon: const Icon(
+              Icons.refresh,
+            ),
+            onPressed: () async {
+              return context.read<WeatherCubit>().refreshWeather();
+            },
           )
         ],
       ),
