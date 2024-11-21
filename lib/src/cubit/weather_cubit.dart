@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../data/model/model.dart';
@@ -31,8 +32,12 @@ class WeatherCubit extends Cubit<WeatherState> {
         location,
         forecast,
       );
-    } on Exception {
-      emit(state.copyWith(status: WeatherStatus.failure));
+    } catch (e) {
+      if (e is DioException && e.type == DioExceptionType.connectionError) {
+        emit(state.copyWith(status: WeatherStatus.initial));
+      } else if (e is Exception) {
+        emit(state.copyWith(status: WeatherStatus.failure));
+      }
     }
   }
 
@@ -62,8 +67,12 @@ class WeatherCubit extends Cubit<WeatherState> {
         city,
         forecast,
       );
-    } on Exception {
-      emit(state.copyWith(status: WeatherStatus.failure));
+    } catch (e) {
+      if (e is DioException && e.type == DioExceptionType.connectionError) {
+        emit(state.copyWith(status: WeatherStatus.initial));
+      } else if (e is Exception) {
+        emit(state.copyWith(status: WeatherStatus.failure));
+      }
     }
   }
 
@@ -93,8 +102,12 @@ class WeatherCubit extends Cubit<WeatherState> {
         state.weather.location,
         forecast,
       );
-    } on Exception {
-      emit(state);
+    } catch (e) {
+      if (e is DioException && e.type == DioExceptionType.connectionError) {
+        emit(state.copyWith(status: WeatherStatus.initial));
+      } else if (e is Exception) {
+        emit(state);
+      }
     }
   }
 

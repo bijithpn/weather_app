@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:weather_app/src/core/core.dart';
+import 'package:weather_app/src/cubit/network_cubit.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage._();
@@ -24,6 +27,8 @@ class _SearchPageState extends State<SearchPage> {
 
   @override
   Widget build(BuildContext context) {
+    final networkStatus =
+        context.watch<NetworkCubit>().state == NetworkStatus.connected;
     return Scaffold(
       appBar: AppBar(
           leading: IconButton(
@@ -49,13 +54,18 @@ class _SearchPageState extends State<SearchPage> {
                 controller: _textController,
                 textInputAction: TextInputAction.done,
                 onFieldSubmitted: (value) {
-                  if (_formKey.currentState!.validate()) {
-                    Navigator.of(context).pop(value.trim());
+                  if (networkStatus) {
+                    if (_formKey.currentState!.validate()) {
+                      Navigator.of(context).pop(value.trim());
+                    }
+                  } else {
+                    UserNotification.showSnackBar(
+                        "Please check you internet connection.");
                   }
                 },
                 validator: (value) {
                   if (value!.isEmpty) {
-                    return 'Please enter some text';
+                    return 'Please enter a city name';
                   }
                   return null;
                 },
@@ -68,10 +78,18 @@ class _SearchPageState extends State<SearchPage> {
                         .bodyMedium!
                         .copyWith(color: Colors.black54),
                     suffixIcon: IconButton(
-                      icon: const Icon(Icons.search, semanticLabel: 'Submit'),
+                      icon: const Icon(
+                        Icons.search,
+                      ),
                       onPressed: () {
-                        if (_formKey.currentState!.validate()) {
-                          Navigator.of(context).pop(_text.trim());
+                        if (networkStatus) {
+                          if (_formKey.currentState!.validate()) {
+                            Navigator.of(context).pop(_text.trim());
+                          }
+                        } else {
+                          FocusScope.of(context).unfocus();
+                          UserNotification.showSnackBar(
+                              "Please check you internet connection.");
                         }
                       },
                     )),
@@ -85,7 +103,7 @@ class _SearchPageState extends State<SearchPage> {
                     .copyWith(fontSize: 100),
               ),
               Text(
-                'Find Your Desired Location',
+                'Find weather for your city',
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
               const Spacer(),

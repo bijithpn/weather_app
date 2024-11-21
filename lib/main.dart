@@ -4,7 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import 'package:weather_app/src/core/core.dart';
 
-import 'src/cubit/weather_cubit.dart';
+import 'src/cubit/cubit.dart';
 import 'src/data/repositories/weather_repository.dart';
 import 'src/view/view.dart';
 
@@ -25,8 +25,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => WeatherCubit(WeatherRepository()),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (_) => WeatherCubit(WeatherRepository())),
+        BlocProvider(create: (_) => NetworkCubit()),
+      ],
       child: MaterialApp(
         navigatorKey: navigatorKey,
         title: 'Weather App',

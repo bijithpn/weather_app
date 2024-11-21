@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:weather_app/src/view/weather/widgets/widgets.dart';
 
 class WeatherError extends StatelessWidget {
   const WeatherError({super.key});
@@ -13,6 +14,10 @@ class WeatherError extends StatelessWidget {
         Text(
           'Something went wrong!',
           style: theme.textTheme.headlineSmall,
+        ),
+        const SizedBox(height: 10),
+        const WeatherButton(
+          text: "Try Again",
         ),
       ],
     );

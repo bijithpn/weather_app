@@ -8,9 +8,12 @@ class UserNotification {
   }
 
   static void showSnackBar(String message,
-      {Color backgroundColor = Colors.red, SnackBarAction? action}) {
+      {Color backgroundColor = Colors.black, SnackBarAction? action}) {
     final snackBar = SnackBar(
-      content: Text(message),
+      content: Text(
+        message,
+        style: const TextStyle(color: Colors.white),
+      ),
       backgroundColor: backgroundColor,
       action: action,
     );
@@ -21,12 +24,38 @@ class UserNotification {
     }
   }
 
+  static void showMaterialBanner(String message, {SnackBarAction? action}) {
+    MaterialBanner materialBanner = MaterialBanner(
+      content: Text(
+        message,
+        style: const TextStyle(color: Colors.white),
+      ),
+      backgroundColor: Colors.black,
+      actions: const [SizedBox()],
+    );
+    if (_navigatorKey.currentContext != null) {
+      ScaffoldMessenger.of(_navigatorKey.currentContext!)
+          .hideCurrentMaterialBanner();
+      ScaffoldMessenger.of(_navigatorKey.currentContext!)
+          .showMaterialBanner(materialBanner);
+    }
+  }
+
   static void showErrorSnackBar(String errorMessage, {SnackBarAction? action}) {
-    showSnackBar(errorMessage, backgroundColor: Colors.red, action: action);
+    showSnackBar(errorMessage, action: action);
+  }
+
+  static void showBanner(String errorMessage, {SnackBarAction? action}) {
+    showMaterialBanner(errorMessage, action: action);
+  }
+
+  static void hideBanner() {
+    ScaffoldMessenger.of(_navigatorKey.currentContext!)
+        .hideCurrentMaterialBanner();
   }
 
   static void showSuccessSnackBar(String successMessage,
       {SnackBarAction? action}) {
-    showSnackBar(successMessage, backgroundColor: Colors.green, action: action);
+    showSnackBar(successMessage, action: action);
   }
 }
