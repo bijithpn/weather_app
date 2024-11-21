@@ -14,8 +14,8 @@ class WeatherCubit extends Cubit<WeatherState> {
       double? lat, double? lng, String? location) async {
     if (lat == null || lng == null) return;
     emit(state.copyWith(status: WeatherStatus.loading));
-
     try {
+      location ??= await _weatherRepository.getPlaceName(lat, lng);
       final weather = await _weatherRepository.getWeather(
         latitude: lat,
         longitude: lng,
@@ -54,16 +54,16 @@ class WeatherCubit extends Cubit<WeatherState> {
     emit(state.copyWith(status: WeatherStatus.loading));
 
     try {
-      final location = await _weatherRepository.locationSearch(city);
+      final poistion = await _weatherRepository.getCoordinatesFromPlace(city);
       final (
         List<String> timeList,
         List<int> weatherCodeLIst,
         List<double> temperatureList
       ) = await _weatherRepository.fetchForecastData(
-          latitude: location.latitude, longitude: location.longitude);
+          latitude: poistion['latitude']!, longitude: poistion['longitude']!);
       final weather = await _weatherRepository.getWeather(
-        latitude: location.latitude,
-        longitude: location.longitude,
+        latitude: poistion['latitude']!,
+        longitude: poistion['longitude']!,
       );
       final units = state.temperatureUnits;
       final value = units.isFahrenheit
@@ -76,7 +76,7 @@ class WeatherCubit extends Cubit<WeatherState> {
           temperatureUnits: units,
           weather: weather.copyWith(
             temperature: value,
-            location: location.name,
+            location: city,
             forecastTimeList: timeList,
             forecastWeatheCodeList: weatherCodeLIst,
             forecastTemperatureList: temperatureList,
@@ -92,17 +92,17 @@ class WeatherCubit extends Cubit<WeatherState> {
     if (!state.status.isSuccess) return;
     if (state.weather == Weather.unknown) return;
     try {
-      final location =
-          await _weatherRepository.locationSearch(state.weather.location);
+      final position = await _weatherRepository
+          .getCoordinatesFromPlace(state.weather.location);
       final (
         List<String> timeList,
         List<int> weatherCodeLIst,
         List<double> temperatureList
       ) = await _weatherRepository.fetchForecastData(
-          latitude: location.latitude, longitude: location.longitude);
+          latitude: position['latitude']!, longitude: position['longitude']!);
       final weather = await _weatherRepository.getWeather(
-        latitude: location.latitude,
-        longitude: location.longitude,
+        latitude: position['latitude']!,
+        longitude: position['longitude']!,
       );
       final units = state.temperatureUnits;
       final value = units.isFahrenheit
@@ -115,7 +115,7 @@ class WeatherCubit extends Cubit<WeatherState> {
           temperatureUnits: units,
           weather: weather.copyWith(
             temperature: value,
-            location: location.name,
+            location: state.weather.location,
             forecastTimeList: timeList,
             forecastTemperatureList: temperatureList,
             forecastWeatheCodeList: weatherCodeLIst,

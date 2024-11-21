@@ -1,11 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:weather_app/src/cubit/weather_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:weather_app/src/data/services/location_service.dart';
 import '../search/search.dart';
 import 'widgets/widgets.dart';
 
-class WeatherPage extends StatelessWidget {
+class WeatherPage extends StatefulWidget {
   const WeatherPage({super.key});
+
+  @override
+  State<WeatherPage> createState() => _WeatherPageState();
+}
+
+class _WeatherPageState extends State<WeatherPage> {
+  @override
+  void initState() {
+    fetchUserLocationData();
+    super.initState();
+  }
+
+  void fetchUserLocationData() async {
+    final position = await LocationService().requestAndGetLocation(context);
+    if (position != null) {
+      if (mounted) {
+        context.read<WeatherCubit>().fetchWeatherWithLatLng(
+            position.latitude, position.longitude, null);
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

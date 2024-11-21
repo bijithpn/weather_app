@@ -8,10 +8,11 @@ class UserNotification {
   }
 
   static void showSnackBar(String message,
-      {Color backgroundColor = Colors.red}) {
+      {Color backgroundColor = Colors.red, SnackBarAction? action}) {
     final snackBar = SnackBar(
       content: Text(message),
       backgroundColor: backgroundColor,
+      action: action,
     );
     if (_navigatorKey.currentContext != null) {
       ScaffoldMessenger.of(_navigatorKey.currentContext!).clearSnackBars();
@@ -20,11 +21,12 @@ class UserNotification {
     }
   }
 
-  static void showErrorSnackBar(String errorMessage) {
-    showSnackBar(errorMessage, backgroundColor: Colors.red);
+  static void showErrorSnackBar(String errorMessage, {SnackBarAction? action}) {
+    showSnackBar(errorMessage, backgroundColor: Colors.red, action: action);
   }
 
-  static void showSuccessSnackBar(String successMessage) {
-    showSnackBar(successMessage, backgroundColor: Colors.green);
+  static void showSuccessSnackBar(String successMessage,
+      {SnackBarAction? action}) {
+    showSnackBar(successMessage, backgroundColor: Colors.green, action: action);
   }
 }
