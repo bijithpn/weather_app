@@ -27,7 +27,7 @@ class ForecastWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "5-DAY FORECAST",
+            "${timeList.length - 1}-DAY FORECAST",
             style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
