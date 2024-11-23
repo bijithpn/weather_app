@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:weather_app/src/core/utils/utils.dart';
 import '../../../data/model/model.dart';
 import 'widgets.dart';
@@ -83,30 +84,60 @@ class WeatherDataWidget extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       IconTextWidget(
-                        weatherCondition: weatherCode,
                         icon: weather.isDay == 1
                             ? Icons.wb_sunny
                             : Icons.nights_stay,
                         text: weather.isDay == 1 ? "Day" : "Night",
                       ),
                       IconTextWidget(
-                        weatherCondition: weatherCode,
                         icon: Icons.wind_power,
                         text: '${weather.windspeed} km/h',
                       ),
                       IconTextWidget(
-                        weatherCondition: weatherCode,
                         icon: Icons.air,
                         text: '${weather.winddirection}°',
                       ),
                     ],
                   ),
                 ),
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                //   children: [
+                //     if (weather.sunrise != null)
+                //       IconDetailWidget(
+                //         title: "Sunrise",
+                //         icon: Icons.sunny,
+                //         text: DateFormat("hh:mm a").format(weather.sunrise!),
+                //       ),
+                //     IconDetailWidget(
+                //       title: "UV Index",
+                //       icon: Icons.flash_on,
+                //       text:
+                //           "${weather.uvIndex} ${Utils.getUvIndexDescription(weather.uvIndex)}",
+                //     ),
+                //     if (weather.sunset != null)
+                //       IconDetailWidget(
+                //         title: "Sunset",
+                //         icon: Icons.wb_twilight,
+                //         text: DateFormat("hh:mm a").format(weather.sunset!),
+                //       ),
+                //   ],
+                // ),
+                const SizedBox(height: 15),
+                TodayForecastWidget(
+                  timeList: weather.todayTimeList,
+                  weatherCodes: weather.todayWeatherCode,
+                  temperatureList: weather.todayTemperatureList,
+                  humidityList: weather.todayHumidityList,
+                ),
                 const SizedBox(height: 15),
                 ForecastWidget(
                   timeList: weather.forecastTimeList,
                   weatherCodes: weather.forecastWeatheCodeList,
                   temperatureList: weather.forecastTemperatureList,
+                ),
+                ApiIconWidget(
+                  weatherCondition: weatherCode,
                 )
               ],
             ),

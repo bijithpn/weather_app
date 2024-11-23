@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:weather_app/src/data/model/model.dart';
 
 class IconTextWidget extends StatelessWidget {
   final IconData icon;
   final String text;
-  final WeatherCondition weatherCondition;
   const IconTextWidget({
     super.key,
     required this.icon,
     required this.text,
-    required this.weatherCondition,
   });
 
   @override

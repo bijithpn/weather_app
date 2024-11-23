@@ -1,5 +1,8 @@
+export 'api_icon_widget.dart';
 export 'forecast_widget.dart';
+export 'icon_detail_widget.dart';
 export 'icon_text.dart';
+export 'today_forecast_widget.dart';
 export 'weather_button.dart';
 export 'weather_data_widget.dart';
 export 'weather_empty.dart';

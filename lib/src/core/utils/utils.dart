@@ -93,4 +93,18 @@ class Utils {
       return "Unknown weather code";
     }
   }
+
+  static String getUvIndexDescription(double uvIndex) {
+    if (uvIndex <= 2) {
+      return "Low";
+    } else if (uvIndex <= 5) {
+      return "Mid";
+    } else if (uvIndex <= 7) {
+      return "High";
+    } else if (uvIndex <= 10) {
+      return "Very High";
+    } else {
+      return "Extreme";
+    }
+  }
 }

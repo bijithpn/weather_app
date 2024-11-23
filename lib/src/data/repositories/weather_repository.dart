@@ -12,8 +12,10 @@ class WeatherRepository {
     required double latitude,
     required double longitude,
     String currentWeather = 'true',
-    String daily = "weather_code,temperature_2m_max",
-    int forecastDays = 10,
+    String daily =
+        "weather_code,temperature_2m_max,sunrise,sunset,uv_index_max",
+    String hourly = "temperature_2m,relative_humidity_2m,weather_code",
+    int forecastDays = 8,
   }) async {
     try {
       final response = await _apiClient.request<dynamic>(
@@ -24,6 +26,7 @@ class WeatherRepository {
               'latitude': '$latitude',
               'longitude': '$longitude',
               "daily": daily,
+              "hourly": hourly,
               "forecast_days": forecastDays,
               'current_weather': 'true'
             }),
@@ -47,10 +50,32 @@ class WeatherRepository {
               ["temperature_2m_max"]
           .whereType<double>()
           .toList();
+      List<String> todayTimeList =
+          response.data['hourly']["time"].whereType<String>().toList();
+      List<int> todayHumidityList = response.data['hourly']
+              ["relative_humidity_2m"]
+          .whereType<int>()
+          .toList();
+      List<int> todayWeatherCode =
+          response.data['hourly']["weather_code"].whereType<int>().toList();
+      List<double> todayTempList = response.data['hourly']["temperature_2m"]
+          .whereType<double>()
+          .toList();
+      DateTime sunrise = DateTime.parse(response.data['daily']['sunrise'][0]);
+      DateTime sunset = DateTime.parse(response.data['daily']['sunset'][0]);
+      double uvIndex = response.data['daily']['uv_index_max'][0];
       final weather = Weather.fromJson(weatherJson).copyWith(
-          forecastTemperatureList: temperatureList,
-          forecastWeatheCodeList: weatherCodeList,
-          forecastTimeList: timeList);
+        forecastTemperatureList: temperatureList,
+        forecastWeatheCodeList: weatherCodeList,
+        forecastTimeList: timeList,
+        todayTimeList: todayTimeList,
+        todayHumidityList: todayHumidityList,
+        todayTemperatureList: todayTempList,
+        sunrise: sunrise,
+        uvIndex: uvIndex,
+        sunset: sunset,
+        todayWeatherCode: todayWeatherCode,
+      );
       return weather;
     } catch (e) {
       // final errorMessage = ErrorHandler.handle(e);
