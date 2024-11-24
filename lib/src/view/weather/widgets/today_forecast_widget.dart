@@ -29,7 +29,7 @@ class TodayForecastWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "TODAY FORECAST",
+            "HOURLY FORECAST",
             style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
@@ -42,7 +42,7 @@ class TodayForecastWidget extends StatelessWidget {
             height: 135,
             child: ListView.separated(
               physics: const BouncingScrollPhysics(),
-              separatorBuilder: (_, __) => const SizedBox(width: 10),
+              separatorBuilder: (_, __) => const SizedBox(width: 5),
               scrollDirection: Axis.horizontal,
               itemCount: timeList.length > 24 ? 24 : timeList.length,
               shrinkWrap: true,
@@ -53,57 +53,54 @@ class TodayForecastWidget extends StatelessWidget {
                 final textColor = cardColor.computeLuminance() > 0.5
                     ? Colors.black
                     : Colors.white;
-                return Card(
-                  elevation: 5,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                    // side: BorderSide(
-                    //   color: textColor,
-                    //   width: 1,
-                    // ),
-                  ),
-                  color: Utils.getBgColor(weatherCode),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 15, vertical: 10),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Text(
-                          Utils.getWeatherEmoji(weatherCode),
-                          style: const TextStyle(fontSize: 25),
-                        ),
-                        const SizedBox(height: 5),
-                        Text(
-                          "${temperatureList[index].toStringAsFixed(0)}°C",
-                          style:
-                              Theme.of(context).textTheme.bodySmall!.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                    color: textColor,
-                                  ),
-                        ),
-                        const SizedBox(height: 5),
-                        Text(
-                          index == 0
-                              ? "Now"
-                              : DateFormat("hh:mm a")
-                                  .format(DateTime.parse(timeList[index])),
-                          style:
-                              Theme.of(context).textTheme.bodySmall!.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                    color: textColor,
-                                  ),
-                        ),
-                        const SizedBox(height: 5),
-                        Text(
-                          "${humidityList[index]}%",
-                          style:
-                              Theme.of(context).textTheme.bodySmall!.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                    color: textColor.withOpacity(.5),
-                                  ),
-                        ),
-                      ],
+                return SizedBox(
+                  width: 150,
+                  child: Card(
+                    elevation: 5,
+                    shape: const CircleBorder(),
+                    color: Utils.getBgColor(weatherCode),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 15, vertical: 10),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Text(
+                            Utils.getWeatherEmoji(weatherCode),
+                            style: const TextStyle(fontSize: 25),
+                          ),
+                          const SizedBox(height: 5),
+                          Text(
+                            "${temperatureList[index].toStringAsFixed(0)}°C",
+                            style:
+                                Theme.of(context).textTheme.bodySmall!.copyWith(
+                                      fontWeight: FontWeight.bold,
+                                      color: textColor,
+                                    ),
+                          ),
+                          const SizedBox(height: 5),
+                          Text(
+                            index == 0
+                                ? "Now"
+                                : DateFormat("hh:mm a")
+                                    .format(DateTime.parse(timeList[index])),
+                            style:
+                                Theme.of(context).textTheme.bodySmall!.copyWith(
+                                      fontWeight: FontWeight.bold,
+                                      color: textColor,
+                                    ),
+                          ),
+                          const SizedBox(height: 5),
+                          Text(
+                            "${humidityList[index]}%",
+                            style:
+                                Theme.of(context).textTheme.bodySmall!.copyWith(
+                                      fontWeight: FontWeight.bold,
+                                      color: textColor.withOpacity(.5),
+                                    ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 );

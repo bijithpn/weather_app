@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:weather_app/src/core/utils/utils.dart';
-import 'package:weather_app/src/data/model/model.dart';
 
 class ApiIconWidget extends StatelessWidget {
-  final WeatherCondition weatherCondition;
-  const ApiIconWidget({super.key, required this.weatherCondition});
+  final int weathercode;
+  const ApiIconWidget({super.key, required this.weathercode});
 
   @override
   Widget build(BuildContext context) {
-    final bgColor = Utils.getBgColor(weatherCondition);
+    final bgColor = Utils.getBgColor(Utils.getWeatherCondition(weathercode));
     final color =
         (bgColor.computeLuminance() > 0.5 ? Colors.black : Colors.white)
             .withOpacity(.5);

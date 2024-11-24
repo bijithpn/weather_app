@@ -29,6 +29,7 @@ class WeatherDataWidget extends StatelessWidget {
         RefreshIndicator(
           onRefresh: onRefresh,
           child: SingleChildScrollView(
+            padding: const EdgeInsets.only(top: 30, bottom: 0),
             physics: const AlwaysScrollableScrollPhysics(),
             clipBehavior: Clip.none,
             child: Column(
@@ -100,29 +101,32 @@ class WeatherDataWidget extends StatelessWidget {
                     ],
                   ),
                 ),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                //   children: [
-                //     if (weather.sunrise != null)
-                //       IconDetailWidget(
-                //         title: "Sunrise",
-                //         icon: Icons.sunny,
-                //         text: DateFormat("hh:mm a").format(weather.sunrise!),
-                //       ),
-                //     IconDetailWidget(
-                //       title: "UV Index",
-                //       icon: Icons.flash_on,
-                //       text:
-                //           "${weather.uvIndex} ${Utils.getUvIndexDescription(weather.uvIndex)}",
-                //     ),
-                //     if (weather.sunset != null)
-                //       IconDetailWidget(
-                //         title: "Sunset",
-                //         icon: Icons.wb_twilight,
-                //         text: DateFormat("hh:mm a").format(weather.sunset!),
-                //       ),
-                //   ],
-                // ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    const Column(
+                      children: [],
+                    ),
+                    if (weather.sunrise != null)
+                      IconDetailWidget(
+                        title: "Sunrise",
+                        icon: Icons.sunny,
+                        text: DateFormat("hh:mm a").format(weather.sunrise!),
+                      ),
+                    IconDetailWidget(
+                      title: "UV Index",
+                      icon: Icons.flash_on,
+                      text:
+                          "${weather.uvIndex} ${Utils.getUvIndexDescription(weather.uvIndex)}",
+                    ),
+                    if (weather.sunset != null)
+                      IconDetailWidget(
+                        title: "Sunset",
+                        icon: Icons.wb_twilight,
+                        text: DateFormat("hh:mm a").format(weather.sunset!),
+                      ),
+                  ],
+                ),
                 const SizedBox(height: 15),
                 TodayForecastWidget(
                   timeList: weather.todayTimeList,
@@ -136,8 +140,11 @@ class WeatherDataWidget extends StatelessWidget {
                   weatherCodes: weather.forecastWeatheCodeList,
                   temperatureList: weather.forecastTemperatureList,
                 ),
-                ApiIconWidget(
-                  weatherCondition: weatherCode,
+                const SizedBox(height: 15),
+                Center(
+                  child: ApiIconWidget(
+                    weathercode: weather.weathercode,
+                  ),
                 )
               ],
             ),

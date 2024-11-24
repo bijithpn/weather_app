@@ -19,18 +19,18 @@ class IconDetailWidget extends StatelessWidget {
         ? Colors.black
         : Colors.white;
     return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 25,
-        vertical: 20,
+      width: 130,
+      padding: const EdgeInsets.all(
+        25,
       ),
       decoration: BoxDecoration(
         color: theme.primaryColor,
-        borderRadius: BorderRadius.circular(10),
+        shape: BoxShape.circle,
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.3),
-            spreadRadius: 5,
-            blurRadius: 7,
+            spreadRadius: 1,
+            blurRadius: 4,
             offset: const Offset(0, 3),
           ),
         ],

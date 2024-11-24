@@ -3,16 +3,19 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'package:weather_app/src/core/core.dart';
+import 'package:weather_app/src/data/services/network_service.dart';
 
 import 'src/cubit/cubit.dart';
 import 'src/data/repositories/weather_repository.dart';
+import 'src/data/services/navigation_service.dart';
 import 'src/view/view.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+  final navigatorKey = NavigationService().navigationKey;
   UserNotification.init(navigatorKey);
   runApp(MyApp(navigatorKey: navigatorKey));
+  initNoInternetListener();
 }
 
 class MyApp extends StatelessWidget {

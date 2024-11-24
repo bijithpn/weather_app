@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:weather_app/src/cubit/weather_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:weather_app/src/data/services/location_service.dart';
+import 'package:weather_app/src/data/services/navigation_service.dart';
 import '../search/search.dart';
 import 'widgets/widgets.dart';
 
@@ -29,13 +30,14 @@ class _WeatherPageState extends State<WeatherPage> {
     }
   }
 
+  final navigationService = NavigationService();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         elevation: 10,
         title: Text(
-          'Weather',
+          'Weather App',
           style: Theme.of(context)
               .textTheme
               .titleLarge!
@@ -44,25 +46,25 @@ class _WeatherPageState extends State<WeatherPage> {
         actions: [
           IconButton(
             icon: const Icon(
+              Icons.refresh,
+            ),
+            onPressed: () async {
+              return context.read<WeatherCubit>().refreshWeather();
+            },
+          ),
+          IconButton(
+            icon: const Icon(
               Icons.search,
             ),
             onPressed: () async {
               final city =
-                  await Navigator.of(context).push(SearchPage.route()) ?? "";
+                  await navigationService.push(const SearchPage()) ?? "";
               if (!context.mounted) return;
               if (city.isNotEmpty) {
                 await context.read<WeatherCubit>().fetchWeather(city);
               }
             },
           ),
-          IconButton(
-            icon: const Icon(
-              Icons.refresh,
-            ),
-            onPressed: () async {
-              return context.read<WeatherCubit>().refreshWeather();
-            },
-          )
         ],
       ),
       body: Center(
