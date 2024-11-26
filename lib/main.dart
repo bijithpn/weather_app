@@ -7,12 +7,11 @@ import 'package:weather_app/src/data/services/network_service.dart';
 
 import 'src/cubit/cubit.dart';
 import 'src/data/repositories/weather_repository.dart';
-import 'src/data/services/navigation_service.dart';
 import 'src/view/view.dart';
 
+final navigatorKey = GlobalKey<NavigatorState>();
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final navigatorKey = NavigationService().navigationKey;
   UserNotification.init(navigatorKey);
   runApp(MyApp(navigatorKey: navigatorKey));
   initNoInternetListener();

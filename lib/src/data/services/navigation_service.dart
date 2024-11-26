@@ -1,34 +1,34 @@
-import 'package:flutter/material.dart';
+// import 'package:flutter/material.dart';
 
-class NavigationService {
-  static final NavigationService _instance = NavigationService._internal();
+// class NavigationService {
+//   static final NavigationService _instance = NavigationService._internal();
 
-  NavigationService._internal();
+//   NavigationService._internal();
 
-  factory NavigationService() => _instance;
+//   factory NavigationService() => _instance;
 
-  final GlobalKey<NavigatorState> navigationKey = GlobalKey<NavigatorState>();
+//   final GlobalKey<NavigatorState> navigationKey = GlobalKey<NavigatorState>();
 
-  dynamic goBack([dynamic popValue]) {
-    return navigationKey.currentState?.pop(popValue);
-  }
+//   dynamic goBack({dynamic popValue}) {
+//     return Navigator.of(navigationKey.currentContext!).pop(popValue);
+//   }
 
-  Future<dynamic> push(Widget page) async {
-    navigationKey.currentState?.push(
-      MaterialPageRoute(builder: (_) => page),
-    );
-  }
+//   Future<dynamic> push(Widget page) async {
+//     navigationKey.currentState?.push(
+//       MaterialPageRoute(builder: (_) => page),
+//     );
+//   }
 
-  Future<dynamic> pushNamed(String route, [arguments]) async {
-    navigationKey.currentState?.pushNamed(route, arguments: arguments);
-  }
+//   Future<dynamic> pushNamed(String route, [arguments]) async {
+//     navigationKey.currentState?.pushNamed(route, arguments: arguments);
+//   }
 
-  Future<dynamic> replaceScreen(Widget page, [arguments]) async {
-    navigationKey.currentState
-        ?.pushReplacement(MaterialPageRoute(builder: (_) => page));
-  }
+//   Future<dynamic> replaceScreen(Widget page, [arguments]) async {
+//     navigationKey.currentState
+//         ?.pushReplacement(MaterialPageRoute(builder: (_) => page));
+//   }
 
-  void popToFirst() {
-    navigationKey.currentState?.popUntil((route) => route.isFirst);
-  }
-}
+//   void popToFirst() {
+//     navigationKey.currentState?.popUntil((route) => route.isFirst);
+//   }
+// }

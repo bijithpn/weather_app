@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:weather_app/src/core/core.dart';
 import 'package:weather_app/src/cubit/network_cubit.dart';
-import 'package:weather_app/src/data/services/navigation_service.dart';
 
 class SearchPage extends StatefulWidget {
-  const SearchPage({super.key});
+  const SearchPage._();
+
+  static Route<String> route() {
+    return MaterialPageRoute(builder: (_) => const SearchPage._());
+  }
 
   @override
   State<SearchPage> createState() => _SearchPageState();
@@ -22,8 +25,6 @@ class _SearchPageState extends State<SearchPage> {
     super.dispose();
   }
 
-  final navigationService = NavigationService();
-
   @override
   Widget build(BuildContext context) {
     final networkStatus =
@@ -32,7 +33,7 @@ class _SearchPageState extends State<SearchPage> {
       appBar: AppBar(
           leading: IconButton(
               onPressed: () {
-                navigationService.goBack();
+                Navigator.of(context).pop();
               },
               icon: const Icon(Icons.arrow_back_ios_new_outlined)),
           title: Text(
@@ -55,7 +56,7 @@ class _SearchPageState extends State<SearchPage> {
                 onFieldSubmitted: (value) {
                   if (networkStatus) {
                     if (_formKey.currentState!.validate()) {
-                      navigationService.goBack(value.trim());
+                      Navigator.of(context).pop(value.trim());
                     }
                   } else {
                     UserNotification.showSnackBar(
@@ -83,7 +84,7 @@ class _SearchPageState extends State<SearchPage> {
                       onPressed: () {
                         if (networkStatus) {
                           if (_formKey.currentState!.validate()) {
-                            navigationService.goBack(_text.trim());
+                            Navigator.of(context).pop(_text.trim());
                           }
                         } else {
                           FocusScope.of(context).unfocus();

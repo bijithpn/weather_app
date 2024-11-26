@@ -1,9 +1,10 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:flutter/material.dart';
+import 'package:weather_app/main.dart';
 
 import '../../view/network/network.dart';
-import 'navigation_service.dart';
 
 class ConnectionStatusListener {
   static final ConnectionStatusListener _singleton =
@@ -62,11 +63,12 @@ void updateConnectivity(
 
   if (!hasConnection) {
     connectionStatus.hasShownNoInternet = true;
-    NavigationService().push(const NoInternetScreen());
+    Navigator.of(navigatorKey.currentContext!).push(
+        MaterialPageRoute(builder: (context) => const NoInternetScreen()));
   } else {
     if (connectionStatus.hasShownNoInternet) {
       connectionStatus.hasShownNoInternet = false;
-      NavigationService().goBack();
+      Navigator.of(navigatorKey.currentContext!).pop();
     }
   }
 }

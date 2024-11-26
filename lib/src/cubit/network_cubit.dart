@@ -7,7 +7,7 @@ enum NetworkStatus { connected, disconnected }
 
 class NetworkCubit extends Cubit<NetworkStatus> {
   final Connectivity _connectivity = Connectivity();
-  NetworkCubit() : super(NetworkStatus.disconnected) {
+  NetworkCubit() : super(NetworkStatus.connected) {
     _monitorNetwork();
   }
   late final StreamSubscription<List<ConnectivityResult>> _subscription;

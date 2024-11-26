@@ -4,10 +4,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:weather_app/src/cubit/weather_cubit.dart';
 
-import 'navigation_service.dart';
-
 class LocationService {
-  final NavigationService _navigationService = NavigationService();
   Future<Position?> requestAndGetLocation(BuildContext context) async {
     PermissionStatus status = await Permission.location.request();
     if (context.mounted) {
@@ -45,6 +42,7 @@ class LocationService {
             TextButton(
               child: const Text("Open Settings"),
               onPressed: () {
+                Navigator.pop(context);
                 context.read<WeatherCubit>().emitEmptyState();
                 Geolocator.openLocationSettings();
               },
@@ -52,7 +50,7 @@ class LocationService {
             TextButton(
               child: const Text("Cancel"),
               onPressed: () {
-                _navigationService.goBack();
+                Navigator.pop(context);
               },
             ),
           ],
@@ -78,7 +76,7 @@ class LocationService {
           actions: [
             TextButton(
               onPressed: () {
-                _navigationService.goBack();
+                Navigator.pop(context);
                 context.read<WeatherCubit>().emitEmptyState();
                 if (isSettingsRedirect) {
                   openAppSettings();
